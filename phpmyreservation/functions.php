@@ -32,7 +32,7 @@ function add_salt($password)
 function strip_salt($password)
 {
 	$password = str_replace('$1$' . substr(global_salt, 0, -1) . '$', '', $password);
-	return($password);	
+	return($password);
 }
 
 // String manipulation
@@ -118,7 +118,7 @@ function login($user_email, $user_password, $user_remember)
 {
 	$user_password_encrypted = encrypt_password($user_password);
 	$user_password = add_salt($user_password);
-	
+
 	$query = mysql_query("SELECT * FROM " . global_mysql_users_table . " WHERE user_email='$user_email' AND user_password='$user_password_encrypted' OR user_email='$user_email' AND user_password='$user_password'")or die('<span class="error_span"><u>MySQL error:</u> ' . htmlspecialchars(mysql_error()) . '</span>');
 
 	if(mysql_num_rows($query) == 1)
@@ -278,11 +278,11 @@ function read_reservation_details($week, $day, $time)
 	if(empty($reservation))
 	{
 		return(0);
-		
+
 	}
 	else
 	{
-		return('<b>Reservation made:</b> ' . $reservation['reservation_made_time'] . '<br><b>User\'s email:</b> ' . $reservation['reservation_user_email']);
+		return('<b>Reservierung gemacht:</b> ' . $reservation['reservation_made_time'] . '<br><b>Benutzer email:</b> ' . $reservation['reservation_user_email']);
 	}
 }
 
@@ -484,7 +484,7 @@ function cost_reservations($user_id)
 
 	while($reservation = mysql_fetch_array($query))
 	{
-		$cost =+ $cost + $reservation['reservation_price'];	
+		$cost =+ $cost + $reservation['reservation_price'];
 	}
 
 	return($cost);
