@@ -218,12 +218,17 @@ div.reservation_time_div
 div.reservation_time_cell_div
 {
 	display: table-cell;
-	width: 100%;
+	width: 50%;
 	height: 40px;
 	vertical-align: middle;
 	text-align: center;
 	font-family: arial, "liberation sans";
 	font-size: 12px;
+}
+
+div.reservation_time_cell_div:hover
+{
+	background: #13ff13;
 }
 
 div#reservation_details_div
@@ -328,6 +333,7 @@ table#reservation_table th.reservation_day_th
 {
 	border-bottom: 1px solid #ccc;
 	font-weight: normal;
+	text-align: center;
 }
 
 table#users_table
@@ -393,7 +399,7 @@ input#price_input
 
 input#reservation_today_button
 {
-	visibility: hidden;	
+	visibility: hidden;
 }
 
 /* Headlines */

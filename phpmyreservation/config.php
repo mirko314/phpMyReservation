@@ -54,4 +54,6 @@ define('global_weeks_forward', '2');
 // Possible reservation times. Use the same syntax as below (TimeFrom-TimeTo)
 $global_times = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10');
 
+// Slot count
+define('global_slot_count', '2')
 ?>

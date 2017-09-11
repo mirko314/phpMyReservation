@@ -263,14 +263,21 @@ function highlight_day($day)
 }
 
 
-function read_reservation($week, $day, $time)
+function read_reservation($week, $day, $time, $slot)
 {
-	$query = mysql_query("SELECT * FROM " . global_mysql_reservations_table . " WHERE reservation_week='$week' AND reservation_day='$day' AND reservation_time='$time'")or die('<span class="error_span"><u>MySQL error:</u> ' . htmlspecialchars(mysql_error()) . '</span>');
+	$query = mysql_query("SELECT * FROM " . global_mysql_reservations_table . " WHERE reservation_week='$week' AND reservation_day='$day' AND reservation_time='$time' AND reservation_slot='$slot'")or die('<span class="error_span"><u>MySQL error:</u> ' . htmlspecialchars(mysql_error()) . '</span>');
 	$reservation = mysql_fetch_array($query);
 	return($reservation['reservation_user_name']);
 }
 
-function read_reservation_details($week, $day, $time)
+function read_reservation_array($week, $day, $time, $slot)
+{
+	$query = mysql_query("SELECT * FROM " . global_mysql_reservations_table . " WHERE reservation_week='$week' AND reservation_day='$day' AND reservation_time='$time' AND reservation_slot='$slot'")or die('<span class="error_span"><u>MySQL error:</u> ' . htmlspecialchars(mysql_error()) . '</span>');
+	$reservation = mysql_fetch_array($query);
+	return([$reservation['reservation_id'], $reservation['reservation_user_name']]);
+}
+
+function read_reservation_details($week, $day, $time, $slot)
 {
 	$query = mysql_query("SELECT * FROM " . global_mysql_reservations_table . " WHERE reservation_week='$week' AND reservation_day='$day' AND reservation_time='$time'")or die('<span class="error_span"><u>MySQL error:</u> ' . htmlspecialchars(mysql_error()) . '</span>');
 	$reservation = mysql_fetch_array($query);
@@ -286,7 +293,7 @@ function read_reservation_details($week, $day, $time)
 	}
 }
 
-function make_reservation($week, $day, $time)
+function make_reservation($week, $day, $time, $slot)
 {
 	$user_id = $_SESSION['user_id'];
 	$user_email = $_SESSION['user_email'];
@@ -297,7 +304,7 @@ function make_reservation($week, $day, $time)
 	{
 		mysql_query("INSERT INTO " . global_mysql_reservations_table . " (reservation_made_time,reservation_week,reservation_day,reservation_time,reservation_price,reservation_user_id,reservation_user_email,reservation_user_name) VALUES (now(),'$week','$day','$time','$price','$user_id','$user_email','$user_name')")or die('<span class="error_span"><u>MySQL error:</u> ' . htmlspecialchars(mysql_error()) . '</span>');
 
-		return(1);
+		return(mysql_insert_id());
 	}
 	elseif($week < global_week_number && $_SESSION['user_is_admin'] != '1' || $week == global_week_number && $day < global_day_number && $_SESSION['user_is_admin'] != '1')
 	{
@@ -307,17 +314,21 @@ function make_reservation($week, $day, $time)
 	{
 		return('You can only reserve ' . global_weeks_forward . ' weeks forward in time');
 	}
+	elseif(!is_numeric($slot) || $slot < 0 || $slot > global_slot_count)
+	{
+		return('Wrong Slot number');
+	}
 	else
 	{
-		$query = mysql_query("SELECT * FROM " . global_mysql_reservations_table . " WHERE reservation_week='$week' AND reservation_day='$day' AND reservation_time='$time'")or die('<span class="error_span"><u>MySQL error:</u> ' . htmlspecialchars(mysql_error()) . '</span>');
+		$query = mysql_query("SELECT * FROM " . global_mysql_reservations_table . " WHERE reservation_week='$week' AND reservation_day='$day' AND reservation_time='$time' AND reservation_slot='$slot'")or die('<span class="error_span"><u>MySQL error:</u> ' . htmlspecialchars(mysql_error()) . '</span>');
 
 		if(mysql_num_rows($query) < 1)
 		{
 			$year = global_year;
 
-			mysql_query("INSERT INTO " . global_mysql_reservations_table . " (reservation_made_time,reservation_year,reservation_week,reservation_day,reservation_time,reservation_price,reservation_user_id,reservation_user_email,reservation_user_name) VALUES (now(),'$year','$week','$day','$time','$price','$user_id','$user_email','$user_name')")or die('<span class="error_span"><u>MySQL error:</u> ' . htmlspecialchars(mysql_error()) . '</span>');
+			mysql_query("INSERT INTO " . global_mysql_reservations_table . " (reservation_made_time,reservation_year,reservation_week,reservation_day,reservation_time,reservation_price,reservation_user_id,reservation_user_email,reservation_user_name, reservation_slot) VALUES (now(),'$year','$week','$day','$time','$price','$user_id','$user_email','$user_name', '$slot')")or die('<span class="error_span"><u>MySQL error:</u> ' . htmlspecialchars(mysql_error()) . '</span>');
 
-			return(1);
+			return(mysql_insert_id());
 		}
 		else
 		{
@@ -326,31 +337,20 @@ function make_reservation($week, $day, $time)
 	}
 }
 
-function delete_reservation($week, $day, $time)
+function delete_reservation($id)
 {
-	if($week < global_week_number && $_SESSION['user_is_admin'] != '1' || $week == global_week_number && $day < global_day_number && $_SESSION['user_is_admin'] != '1')
+	$query = mysql_query("SELECT * FROM " . global_mysql_reservations_table . " WHERE reservation_id='$id'")or die('<span class="error_span"><u>MySQL error:</u> ' . htmlspecialchars(mysql_error()) . '</span>');
+	$user = mysql_fetch_array($query);
+
+	if($user['reservation_user_id'] == $_SESSION['user_id'] || $_SESSION['user_is_admin'] == '1')
 	{
-		return('You can\'t reserve back in time');
-	}
-	elseif($week > global_week_number + global_weeks_forward && $_SESSION['user_is_admin'] != '1')
-	{
-		return('You can only reserve ' . global_weeks_forward . ' weeks forward in time');
+		mysql_query("DELETE FROM " . global_mysql_reservations_table . " WHERE reservation_id='$id'")or die('<span class="error_span"><u>MySQL error:</u> ' . htmlspecialchars(mysql_error()) . '</span>');
+
+		return(1);
 	}
 	else
 	{
-		$query = mysql_query("SELECT * FROM " . global_mysql_reservations_table . " WHERE reservation_week='$week' AND reservation_day='$day' AND reservation_time='$time'")or die('<span class="error_span"><u>MySQL error:</u> ' . htmlspecialchars(mysql_error()) . '</span>');
-		$user = mysql_fetch_array($query);
-
-		if($user['reservation_user_id'] == $_SESSION['user_id'] || $_SESSION['user_is_admin'] == '1')
-		{
-			mysql_query("DELETE FROM " . global_mysql_reservations_table . " WHERE reservation_week='$week' AND reservation_day='$day' AND reservation_time='$time'")or die('<span class="error_span"><u>MySQL error:</u> ' . htmlspecialchars(mysql_error()) . '</span>');
-
-			return(1);
-		}
-		else
-		{
-			return('You can\'t remove other users\' reservations');
-		}
+		return('You can\'t remove other users\' reservations');
 	}
 }
 

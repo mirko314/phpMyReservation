@@ -9,28 +9,29 @@ if(isset($_GET['make_reservation']))
 	$week = mysql_real_escape_string($_POST['week']);
 	$day = mysql_real_escape_string($_POST['day']);
 	$time = mysql_real_escape_string($_POST['time']);
-	echo make_reservation($week, $day, $time);
+	$slot = mysql_real_escape_string($_POST['slot']);
+	echo make_reservation($week, $day, $time, $slot);
 }
 elseif(isset($_GET['delete_reservation']))
 {
-	$week = mysql_real_escape_string($_POST['week']);
-	$day = mysql_real_escape_string($_POST['day']);
-	$time = mysql_real_escape_string($_POST['time']);
-	echo delete_reservation($week, $day, $time);
+	$id = mysql_real_escape_string($_POST['id']);
+	echo delete_reservation($id);
 }
 elseif(isset($_GET['read_reservation']))
 {
 	$week = mysql_real_escape_string($_POST['week']);
 	$day = mysql_real_escape_string($_POST['day']);
 	$time = mysql_real_escape_string($_POST['time']);
-	echo read_reservation($week, $day, $time);
+	$slot = mysql_real_escape_string($_POST['slot']);
+	echo json_encode(read_reservation_array($week, $day, $time, $slot));
 }
 elseif(isset($_GET['read_reservation_details']))
 {
 	$week = mysql_real_escape_string($_POST['week']);
 	$day = mysql_real_escape_string($_POST['day']);
 	$time = mysql_real_escape_string($_POST['time']);
-	echo read_reservation_details($week, $day, $time);
+	$slot = mysql_real_escape_string($_POST['slot']);
+	echo read_reservation_details($week, $day, $time, $slot);
 }
 elseif(isset($_GET['week']))
 {
@@ -58,8 +59,15 @@ elseif(isset($_GET['week']))
 		while($i < 5)
 		{
 			$i++;
-
-			echo '<td><div class="reservation_time_div"><div class="reservation_time_cell_div" id="div:' . $week . ':' . $i . ':' . $time . '" onclick="void(0)">' . read_reservation($week, $i, $time) . '</div></div></td>';
+			echo '<td><div class="reservation_time_div">';
+			for ($slot=0; $slot < global_slot_count; $slot++) {
+				$reservation = read_reservation_array($week, $i, $time, $slot);
+				if($reservation)
+					echo '<div class="reservation_time_cell_div" data-resid="' . $reservation[0] . '" id="div:' . $week . ':' . $i . ':' . $time . ':' . $slot . ':' . $reservation[0] . '" onclick="void(0)">' . $reservation[1] . '</div>';
+				else
+					echo '<div data-resid="-1" class="reservation_time_cell_div" id="div:' . $week . ':' . $i . ':' . $time . ':' . $slot . '" onclick="void(0)"></div>';
+			}
+			echo '</div></td>';
 		}
 
 		echo '</tr>';

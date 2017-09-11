@@ -309,7 +309,7 @@ function create_user()
 
 // Reservation
 
-function toggle_reservation_time(id, week, day, time, from)
+function toggle_reservation_time(id, week, day, time, slot, from, res_id)
 {
 	if(session_user_is_admin == '1')
 	{
@@ -329,16 +329,16 @@ function toggle_reservation_time(id, week, day, time, from)
 	{
 		$(id).html('Warte...');
 
-		$.post('reservation.php?make_reservation', { week: week, day: day, time: time }, function(data)
+		$.post('reservation.php?make_reservation', { week: week, day: day, time: time, slot: slot }, function(data)
 		{
-			if(data == 1)
+			if(data >= 0)
 			{
-				setTimeout(function() { read_reservation(id, week, day, time); }, 1000);
+				setTimeout(function() { read_reservation(id, week, day, time, slot); }, 1000);
 			}
 			else
 			{
 				notify(data, 4);
-				setTimeout(function() { read_reservation(id, week, day, time); }, 2000);
+				setTimeout(function() { read_reservation(id, week, day, time, slot); }, 2000);
 			}
 		});
 	}
@@ -364,17 +364,16 @@ function toggle_reservation_time(id, week, day, time, from)
 				if(delete_confirm)
 				{
 					$(id).html('Warte...');
-
-					$.post('reservation.php?delete_reservation', { week: week, day: day, time: time }, function(data)
+					$.post('reservation.php?delete_reservation', { id: res_id }, function(data)
 					{
 						if(data == 1)
 						{
-							setTimeout(function() { read_reservation(id, week, day, time); }, 1000);
+							setTimeout(function() { read_reservation(id, week, day, time, slot); }, 1000);
 						}
 						else
 						{
 							notify(data, 4);
-							setTimeout(function() { read_reservation(id, week, day, time); }, 2000);
+							setTimeout(function() { read_reservation(id, week, day, time, slot); }, 2000);
 						}
 					});
 				}
@@ -392,12 +391,17 @@ function toggle_reservation_time(id, week, day, time, from)
 	}
 }
 
-function read_reservation(id, week, day, time)
+function read_reservation(id, week, day, time, slot)
 {
-	$.post('reservation.php?read_reservation', { week: week, day: day, time: time }, function(data) { $(id).html(data); });
+	$.post('reservation.php?read_reservation', { week: week, day: day, time: time, slot: slot },
+	function(data) {
+		js = JSON.parse(data);
+		$(id).html(js[1]);
+		$(id).data("resid", js[0]);
+	});
 }
 
-function read_reservation_details(id, week, day, time)
+function read_reservation_details(id, week, day, time, slot)
 {
 	if(typeof id != 'undefined' && $(id).html() != '' && $(id).html() != 'Wait...')
 	{
@@ -415,8 +419,9 @@ function read_reservation_details(id, week, day, time)
 			reservation_details_week = week;
 			reservation_details_day = day;
 			reservation_details_time = time;
+			reservation_details_slot = slot;
 
-			$.post('reservation.php?read_reservation_details', { week: week, day: day, time: time }, function(data)
+			$.post('reservation.php?read_reservation_details', { week: week, day: day, time: time, slot: slot }, function(data)
 			{
 				setTimeout(function()
 				{
@@ -441,7 +446,7 @@ function read_reservation_details(id, week, day, time)
 						{
 							if($(reservation_details_id).html() == session_user_name || session_user_is_admin == '1')
 							{
-								var delete_link_html = '<a href="." onclick="toggle_reservation_time(reservation_details_id, reservation_details_week, reservation_details_day, reservation_details_time, \'details\'); return false">Löschen</a> | ';
+								var delete_link_html = '<a href="." onclick="toggle_reservation_time(reservation_details_id, reservation_details_week, reservation_details_day, reservation_details_time, reservation_details_slot, \'details\', reservation_details_time, reservation_details_res_id); return false">Löschen</a> | ';
 							}
 							else
 							{
@@ -858,13 +863,15 @@ $(document).ready( function()
 	$(document).on('click', '.reservation_time_cell_div', function()
 	{
 		var array = this.id.split(':');
-		toggle_reservation_time(this, array[1], array[2], array[3], array[0]);
+		var reservation_id = $(this).data("resid");
+		toggle_reservation_time(this, array[1], array[2], array[3], array[4], array[0], reservation_id);
 	});
 
 	$(document).on('mousemove', '.reservation_time_cell_div', function()
 	{
 		var array = this.id.split(':');
-		read_reservation_details(this, array[1], array[2], array[3]);
+		var reservation_id = $(this).data("resid");
+		read_reservation_details(this, array[1], array[2], array[3], array[4]);
 	});
 
 	// Mouse pointer
