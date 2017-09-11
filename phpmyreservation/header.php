@@ -9,6 +9,7 @@
 if(isset($_SESSION['logged_in']))
 {
 	echo ' | <a href="#help">Hilfe</a>';
+	echo ' | <a href="#">Kalender</a>';
 }
 
 ?>

@@ -29,8 +29,16 @@
 
 <div id="header_div"><?php include('header.php'); ?></div>
 
-<h1><?php echo global_title; ?></h1>
-<h2><?php echo global_organization; ?></h2>
+
+<div id="brand_div" style="width: 600px;clear: both;margin: auto;height: 100px;">
+  <div>
+    <img src="http://www.ist-bochum.de/wp-content/themes/boldy/bilder/ZDI_LOGO_rgb_60h.jpg" alt="logo Ist" />
+  </div>
+  <div>
+    <h1><?php echo global_title; ?></h1>
+    <h2><?php echo global_organization; ?></h2>
+  </div>
+</div>
 
 <div id="content_div"></div>
 

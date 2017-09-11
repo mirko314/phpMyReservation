@@ -7,25 +7,20 @@ if(check_login() != true) { exit; }
 ?>
 
 <div class="box_div" id="help_div">
-<div class="box_top_div"><a href="#">Start</a> &gt; Help</div>
+<div class="box_top_div"><a href="#">Start</a> &gt; Hilfe</div>
 <div class="box_body_div">
 
-<h3>Reservations</h3>
+<h3>Reservieren</h3>
 
 <ul>
-<li><b>How much does it cost?</b><br>The current price per reservation is <?php echo global_price . ' ' . global_currency; ?>.</li>
-<li><b>How do I make a reservation?</b><br>Click on the time you wish to reserve.</li>
-<li><b>How do I remove a reservation?</b><br>Click on the reservation you wish to remove.</li>
-<li><b>If I have used without making a reservation first, how do I register it?</b><br>Go to the <a href="#cp">control panel</a> and click on "Add 1 to my reservations".</li>
-<li><b>How do I check my usage?</b><br>You can check your usage in the <a href="#cp">control panel</a>.</li>
-<li><b>What reservation restrictions are there?</b><br>You can't make or remove reservations back in time or remove other users' reservations. The webmaster may restrict how many weeks forward in time you can make reservations.</li>
-<li><b>Can I get reservation reminders?</b><br>If the webmaster has enabled it, you can turn it on in the <a href="#cp">control panel</a>.</li>
+<li><b>Wieso gibt es 2 Slots Pro Tag</b><br>Es werden vom IST-Bochum 2 IPAD-Koffer verliehen. Jeder Beinhaltet 12 Ipads.</li>
+<li><b>Reservierung entfernen?</b><br>Auf die Reservierung klicken um Sie zu entfernen.</li>
 </ul>
 
-<h3>Other</h3>
+<h3>Anderes</h3>
 
 <ul>
-<li><b>How do I change my name, email and/or password?</b><br>You can do that in the <a href="#cp">control panel</a>.</li>
+<li><b>Wie ändere Ich meinen Namen, Email oder Passwort?</b><br>Das ist im <a href="#cp">Control Panel</a> möglich.</li>
 </ul>
 
 <?php

@@ -368,6 +368,7 @@ function toggle_reservation_time(id, week, day, time, slot, from, res_id)
 					{
 						if(data == 1)
 						{
+
 							setTimeout(function() { read_reservation(id, week, day, time, slot); }, 1000);
 						}
 						else
@@ -858,7 +859,7 @@ $(document).ready( function()
 	$(document).on('click', '#next_week_a', function() { showweek('next'); return false; });
 
 	// Divisions
-	$(document).on('mouseout', '.reservation_time_cell_div', function() { read_reservation_details(); });
+	$(document).on('mouseout', '.reservation_time_cell_div', function() { read_reservation_details(); set_class_booked(this); });
 
 	$(document).on('click', '.reservation_time_cell_div', function()
 	{
@@ -871,6 +872,7 @@ $(document).ready( function()
 	{
 		var array = this.id.split(':');
 		var reservation_id = $(this).data("resid");
+		set_class_booked(this, reservation_id);
 		read_reservation_details(this, array[1], array[2], array[3], array[4]);
 	});
 
@@ -878,6 +880,9 @@ $(document).ready( function()
 	$(document).on('mouseover', 'input:button, input:submit, .reservation_time_div', function() { this.style.cursor = 'pointer'; });
 });
 
+function set_class_booked(elem, id) {
+	id > 0 ?  $(elem).removeClass( "notbooked" ).addClass( "booked" ) : $(elem).removeClass( "booked" ).addClass( "notbooked" );
+}
 // Hash change
 
 function hash()

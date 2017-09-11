@@ -63,7 +63,7 @@ elseif(isset($_GET['week']))
 			for ($slot=0; $slot < global_slot_count; $slot++) {
 				$reservation = read_reservation_array($week, $i, $time, $slot);
 				if($reservation)
-					echo '<div class="reservation_time_cell_div" data-resid="' . $reservation[0] . '" id="div:' . $week . ':' . $i . ':' . $time . ':' . $slot . ':' . $reservation[0] . '" onclick="void(0)">' . $reservation[1] . '</div>';
+					echo '<div class="reservation_time_cell_div" data-resid="' . $reservation[0] . '" id="div:' . $week . ':' . $i . ':' . $time . ':' . $slot . '" onclick="void(0)">' . $reservation[1] . '</div>';
 				else
 					echo '<div data-resid="-1" class="reservation_time_cell_div" id="div:' . $week . ':' . $i . ':' . $time . ':' . $slot . '" onclick="void(0)"></div>';
 			}

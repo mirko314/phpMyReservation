@@ -26,7 +26,7 @@ elseif(isset($_GET['new_user']))
 
 ?>
 
-	<div class="box_div" id="login_div"><div class="box_top_div"><a href="#">Start</a> &gt; New user</div><div class="box_body_div">
+	<div class="box_div" id="login_div"><div class="box_top_div"><a href="#">Start</a> &gt; Neuer benutzer</div><div class="box_body_div">
 	<div id="new_user_div"><div>
 
 	<form action="." id="new_user_form"><p>
@@ -35,9 +35,9 @@ elseif(isset($_GET['new_user']))
 	<input type="text" id="user_name_input"><br><br>
 	<label for="user_email_input">Email:</label><br>
 	<input type="text" id="user_email_input" autocapitalize="off"><br><br>
-	<label for="user_password_input">Password:</label><br>
+	<label for="user_password_input">Passwort:</label><br>
 	<input type="password" id="user_password_input"><br><br>
-	<label for="user_password_confirm_input">Confirm password:</label><br>
+	<label for="user_password_confirm_input">Passwort wiederholen:</label><br>
 	<input type="password" id="user_password_confirm_input"><br><br>
 
 <?php
@@ -54,12 +54,10 @@ elseif(isset($_GET['new_user']))
 	</p></form>
 
 	</div><div>
-	
+
 	<p class="blue_p bold_p">Information:</p>
 	<ul>
-	<li>With just a click you can make your reservation</li>
-	<li>Your usage is stored automatically</li>
-	<li>Your password is encrypted and can't be read</li>
+	<li>Mit nur einem Klick wird Reserviert</li>
 	</ul>
 
 	<div id="user_secret_code_div">Secret code is used to only allow certain people to create a new user. Contact the webmaster by email at <span id="email_span"></span> to get the secret code.</div>
@@ -101,14 +99,14 @@ else
 	<form action="." id="login_form" autocomplete="off"><p>
 
 	<label for="user_email_input">Email:</label><br><input type="text" id="user_email_input" value="<?php echo get_login_data('user_email'); ?>" autocapitalize="off"><br><br>
-	<label for="user_password_input">Password:</label><br><input type="password" id="user_password_input" value="<?php echo get_login_data('user_password'); ?>"><br><br>
-	<input type="checkbox" id="remember_me_checkbox" checked="checked"> <label for="remember_me_checkbox">Remember me</label><br><br>		
+	<label for="user_password_input">Passwort:</label><br><input type="password" id="user_password_input" value="<?php echo get_login_data('user_password'); ?>"><br><br>
+	<input type="checkbox" id="remember_me_checkbox" checked="checked"> <label for="remember_me_checkbox">Eingeloggt bleiben</label><br><br>
 	<input type="submit" value="Log in">
 
 	</p></form>
 
 	<p id="login_message_p"></p>
-	<p><a href="#new_user">New user</a> | <a href="#forgot_password">Forgot password</a></p>
+	<p><a href="#new_user">Neuer Benutzer</a> | <a href="#forgot_password">Passwort vergessen</a></p>
 
 	</div></div>
 

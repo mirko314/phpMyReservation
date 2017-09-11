@@ -10,7 +10,17 @@ body
 }
 
 /* Divisions */
-
+#brand_div
+{
+  width: 600px;
+  clear: both;
+  margin: auto;
+}
+#brand_div > div
+{
+	float: left;
+	margin: 20px;
+}
 div#notification_div
 {
 	display: none;
@@ -226,9 +236,13 @@ div.reservation_time_cell_div
 	font-size: 12px;
 }
 
-div.reservation_time_cell_div:hover
+.booked:hover
 {
-	background: #13ff13;
+	background-color: #f00;
+}
+.notbooked:hover
+{
+	background-color: #13ff13;
 }
 
 div#reservation_details_div

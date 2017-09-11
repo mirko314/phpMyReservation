@@ -48,7 +48,7 @@ function modify_email($email)
 
 function validate_user_name($user_name)
 {
-	if(preg_match('/^[a-z æøåÆØÅ]{2,12}$/i', $user_name))
+	if(preg_match('/^[äöü ÄÖÜ 0-9 a-z-]{2,20}$/i', $user_name))
 	{
 		return(true);
 	}
@@ -179,7 +179,7 @@ function create_user($user_name, $user_email, $user_password, $user_secret_code)
 {
 	if(validate_user_name($user_name) != true)
 	{
-		return('<span class="error_span">Name must be <u>letters only</u> and be <u>2 to 12 letters long</u>. If your name is longer, use a short version of your name</span>');
+		return('<span class="error_span">Name must be <u>letters only</u> and be <u>2 to 20 letters long</u>. If your name is longer, use a short version of your name</span>');
 	}
 	elseif(validate_user_email($user_email) != true)
 	{
