@@ -55,5 +55,8 @@ define('global_weeks_forward', '2');
 $global_times = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10');
 
 // Slot count
-define('global_slot_count', '2')
+define('global_slot_count', '2');
+
+// Slot count
+define('global_usage_reminder', '0');
 ?>

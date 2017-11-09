@@ -2,13 +2,11 @@
 
 <div id="header_inner_div"><div id="header_inner_left_div">
 
-<a href="#about">Über</a>
-
 <?php
 
 if(isset($_SESSION['logged_in']))
 {
-	echo ' | <a href="#help">Hilfe</a>';
+	echo ' <a href="#help">Hilfe</a>';
 	echo ' | <a href="#">Kalender</a>';
 }
 

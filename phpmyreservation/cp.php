@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 include_once('main.php');
 
@@ -100,6 +100,7 @@ else
 <?php
 
 	}
+	if(global_usage_reminder == '1'){
 
 ?>
 
@@ -116,7 +117,7 @@ else
 	<hr>
 
 <?php
-
+	}
 	if(global_reservation_reminders == '1')
 	{
 
@@ -137,9 +138,9 @@ else
 
 ?>
 
-	<h3>Your details</h3>
+	<h3>Dein Account</h3>
 
-	<p class="smalltext_p">If you change your email, you must use the new one to log in. Password can be left blank to leave unchanged.</p>
+	<p class="smalltext_p">Falls du deine Email veränderst musst du diese auch zum einloggen verwenden. Passwort kann leer gelassen werden um es nicht zu verändern.</p>
 
 	<form action="." id="user_details_form" autocomplete="off"><p>
 
@@ -149,13 +150,13 @@ else
 	<label for="user_email_input">Email:</label><br>
 	<input type="text" id="user_email_input" autocapitalize="off" value="<?php echo $_SESSION['user_email']; ?>">
 	</div><div>
-	<label for="user_password_input">Password:</label><br>
+	<label for="user_password_input">Passwort:</label><br>
 	<input type="password" id="user_password_input"><br><br>
-	<label for="user_password_confirm_input">Confirm password:</label><br>
+	<label for="user_password_confirm_input">Passwort bestätigen:</label><br>
 	<input type="password" id="user_password_confirm_input">
 	</div></div>
 
-	<p><input type="submit" class="small_button blue_button" value="Update my details"></p>
+	<p><input type="submit" class="small_button blue_button" value="Account aktualisieren"></p>
 
 	</p></form>
 

@@ -308,11 +308,11 @@ function make_reservation($week, $day, $time, $slot)
 	}
 	elseif($week < global_week_number && $_SESSION['user_is_admin'] != '1' || $week == global_week_number && $day < global_day_number && $_SESSION['user_is_admin'] != '1')
 	{
-		return('You can\'t reserve back in time');
+		return('Du kannst nicht in der Vergangenheit reservieren.');
 	}
 	elseif($week > global_week_number + global_weeks_forward && $_SESSION['user_is_admin'] != '1')
 	{
-		return('You can only reserve ' . global_weeks_forward . ' weeks forward in time');
+		return('Du kannst nur ' . global_weeks_forward . ' Wochen im vorraus reservieren');
 	}
 	elseif(!is_numeric($slot) || $slot < 0 || $slot > global_slot_count)
 	{
@@ -566,5 +566,15 @@ function change_user_details($user_name, $user_email, $user_password)
 		return(1);
 	}
 }
-
+function getWeekDates($week) {
+	$fmt = "%A, %e. %m";
+	$now = new DateTime();
+	$now->setTime(0, 0);
+  $dto = new DateTime();
+  $ret = [[strftime($fmt, $dto->setISODate(date("Y"), $week)->getTimestamp()), $dto >= $now]];
+	for ($i=0; $i < 4; $i++) {
+		array_push($ret, [strftime($fmt, $dto->modify('+1 days')->getTimestamp()), $dto >= $now]);
+	}
+  return $ret;
+}
 ?>

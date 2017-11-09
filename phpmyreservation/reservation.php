@@ -35,11 +35,16 @@ elseif(isset($_GET['read_reservation_details']))
 }
 elseif(isset($_GET['week']))
 {
+	echo 'Klick einfach auf die Termine die du buchen willst. Links ist der Gelbe iPad-Koffer und rechts der Weiße.';
 	$week = $_GET['week'];
-
+	$dates = getWeekDates($week);
 	echo '<table id="reservation_table"><colgroup span="1" id="reservation_time_colgroup"></colgroup><colgroup span="7" id="reservation_day_colgroup"></colgroup>';
 
-	$days_row = '<tr><td>Schulstunde</td><th class="reservation_day_th">Montag</th><th class="reservation_day_th">Dienstag</th><th class="reservation_day_th">Mittwoch</th><th class="reservation_day_th">Donnerstag</th><th class="reservation_day_th">Freitag</th></tr>';
+	$days_row = '<tr><td>Schulstunde</td>';
+	foreach ($dates as $date) {
+		$days_row .= '<th class="reservation_day_th">' . $date[0] . '</th>';
+	}
+	$days_row .= '</tr>';
 
 	if($week == global_week_number)
 	{
@@ -62,10 +67,11 @@ elseif(isset($_GET['week']))
 			echo '<td><div class="reservation_time_div">';
 			for ($slot=0; $slot < global_slot_count; $slot++) {
 				$reservation = read_reservation_array($week, $i, $time, $slot);
+				$disabledclass = $dates[$i-1][1] == true ? "hoverable" : " disabledTime";
 				if($reservation)
-					echo '<div class="reservation_time_cell_div" data-resid="' . $reservation[0] . '" id="div:' . $week . ':' . $i . ':' . $time . ':' . $slot . '" onclick="void(0)">' . $reservation[1] . '</div>';
+					echo '<div class="reservation_time_cell_div slot' . $slot . ' ' . $disabledclass . '" data-resid="' . $reservation[0] . '" id="div:' . $week . ':' . $i . ':' . $time . ':' . $slot . '" onclick="void(0)">' . $reservation[1] . '</div>';
 				else
-					echo '<div data-resid="-1" class="reservation_time_cell_div" id="div:' . $week . ':' . $i . ':' . $time . ':' . $slot . '" onclick="void(0)"></div>';
+					echo '<div class="reservation_time_cell_div slot' . $slot . ' ' . $disabledclass . '" data-resid="-1" id="div:' . $week . ':' . $i . ':' . $time . ':' . $slot . '" onclick="void(0)"></div>';
 			}
 			echo '</div></td>';
 		}
